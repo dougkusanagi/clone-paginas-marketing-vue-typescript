@@ -2,8 +2,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import FormClonePage from "@/Components/FormClonePage.vue";
 import { Head } from "@inertiajs/vue3";
-import { useToast } from "@/components/ui/toast/use-toast";
-const { toast } = useToast();
+import { ref } from "vue";
+
+const link_url_editor = ref("");
 </script>
 
 <template>

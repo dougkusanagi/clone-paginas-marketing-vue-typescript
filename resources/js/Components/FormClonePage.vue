@@ -1,28 +1,17 @@
 <script setup>
 import { ref } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/toast/use-toast";
 
 const url = ref("https://my.copyblogger.com/");
-const { toast } = useToast();
 
 function clone() {
     router.post(
         route("cloned-page.store"),
         { url: url.value },
-        {
-            onFinish: () => {
-                // console.log("finish");
-                // console.log(usePage().props.success);
-                // toast({
-                //     title: "Scheduled: Catch up",
-                //     description: "Friday, February 10, 2023 at 5:57 PM",
-                // });
-            },
-        }
+        { onFinish: () => {} }
     );
 }
 </script>
