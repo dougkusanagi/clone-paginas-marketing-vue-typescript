@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import FormClonePage from "@/Components/FormClonePage.vue";
 import { Head } from "@inertiajs/vue3";
 import { useToast } from "@/components/ui/toast/use-toast";
 const { toast } = useToast();
@@ -17,21 +18,10 @@ const { toast } = useToast();
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
-                    <Button
-                        @click="
-                            () => {
-                                toast({
-                                    title: 'Scheduled: Catch up',
-                                    description:
-                                        'Friday, February 10, 2023 at 5:57 PM',
-                                });
-                            }
-                        "
-                    >
-                        Add to calander
-                    </Button>
+                <div
+                    class="overflow-hidden bg-white p-6 text-gray-900 shadow-sm dark:bg-gray-800 dark:text-gray-100 sm:rounded-lg"
+                >
+                    <form-clone-page />
                 </div>
             </div>
         </div>
