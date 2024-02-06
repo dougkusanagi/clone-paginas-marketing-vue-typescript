@@ -21,14 +21,15 @@ class ClonedPageController extends Controller
         $latest_page = ClonedPage::latest()->first();
 
         if ($last_page && $latest_page->id == $last_page->id) {
-            return inertia("Dashboard")
-                ->with("warning", "Algum erro aconteceu ao tentar clonar a página {$url}. Tente novamente mais tarde.");
+            return response(500)->json([
+                "error" => "Algum erro aconteceu ao tentar clonar a página {$url}. Tente novamente mais tarde.",
+            ]);
         }
 
-        return inertia("Dashboard", [
+        return response()->json([
             "id" => $latest_page->id,
             "url" => $latest_page->url,
-        ])
-            ->with("success", "Página clonada com sucesso!");
+            "success" => "Página clonada com sucesso!",
+        ]);
     }
 }
