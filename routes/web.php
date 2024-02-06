@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/cloned-page', [ClonedPageController::class, 'store'])
     ->name('cloned-page.store');
 
-Route::get('/cloned-page/{id}', [ClonedPageController::class, 'edit'])
+Route::get('/cloned-page/{clonedPage}', [ClonedPageController::class, 'edit'])
     ->name('cloned-page.edit');
 
 require __DIR__ . '/auth.php';

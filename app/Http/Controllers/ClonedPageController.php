@@ -32,4 +32,13 @@ class ClonedPageController extends Controller
             "success" => "Página clonada com sucesso!",
         ]);
     }
+
+    public function edit(ClonedPage $clonedPage)
+    {
+        // dd($clonedPage);
+
+        return view('cloned-page.edit', [
+            'clonedPage' => $clonedPage
+        ]);
+    }
 }
