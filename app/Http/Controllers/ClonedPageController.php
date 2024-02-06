@@ -11,23 +11,24 @@ class ClonedPageController extends Controller
 {
     public function store(Request $request)
     {
-        // $request->validate(['url' => 'required|url']);
-        // dd($request->get('url'));
-
+        $request->validate(['url' => 'required|url']);
+        $url = $request->get('url');
         $last_page = ClonedPage::latest()->first();
 
         PageCrawlerServiceFactory::create()
-            ->start($request->get('url'));
+            ->start($url);
 
         $latest_page = ClonedPage::latest()->first();
 
         if ($last_page && $latest_page->id == $last_page->id) {
-            return to_route("dashboard")
-                ->with("warning", "Algum erro aconteceu. Tente novamente mais tarde.");
+            return inertia("Dashboard")
+                ->with("warning", "Algum erro aconteceu ao tentar clonar a página {$url}. Tente novamente mais tarde.");
         }
 
-        return to_route("dashboard", [
-            "id" => $latest_page->id
-        ])->with("success", "Página clonada com sucesso!");
+        return inertia("Dashboard", [
+            "id" => $latest_page->id,
+            "url" => $latest_page->url,
+        ])
+            ->with("success", "Página clonada com sucesso!");
     }
 }

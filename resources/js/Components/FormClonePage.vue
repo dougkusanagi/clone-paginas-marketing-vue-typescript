@@ -1,31 +1,24 @@
 <script setup>
-import { ref } from "vue";
-import { router } from "@inertiajs/vue3";
+import { useForm } from "@inertiajs/vue3";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const url = ref("https://my.copyblogger.com/");
-
-function clone() {
-    router.post(
-        route("cloned-page.store"),
-        { url: url.value },
-        { onFinish: () => {} }
-    );
-}
+const form = useForm({ url: "https://my.copyblogger.com/" });
 </script>
 
 <template>
-    <form @submit.prevent="clone">
+    <form @submit.prevent="form.post(route('cloned-page.store'))">
         <div class="flex items-center space-x-3">
             <Input
                 type="text"
                 placeholder="Digite o endereço do site"
-                v-model="url"
+                v-model="form.url"
             />
 
-            <Button class="btn btn-info">Clonar</Button>
+            <Button class="btn btn-info" :disabled="form.processing">
+                Clonar
+            </Button>
         </div>
 
         <Label class="mt-3 block">

@@ -9,21 +9,24 @@ import { Link, usePage } from "@inertiajs/vue3";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import { useToast } from "@/components/ui/toast";
 
-const showingNavigationDropdown = ref(false);
+interface Flash {
+    [key: string]: string | undefined;
+}
 
-const flash = computed(() => usePage().props.flash);
 const { toast } = useToast();
+const showingNavigationDropdown = ref(false);
+const flash = computed(() => usePage().props.flash as Flash);
 
 function triggerFlash() {
     const types = Object.keys(flash.value);
 
     types.forEach((type) => {
-        if (flash.value[type] !== null) {
+        if (flash.value[type]) {
             toast({
                 title: flash.value[type],
                 // description: 'Friday, February 10, 2023 at 5:57 PM',
             });
-            flash.value[type] = null;
+            flash.value[type] = "undefined";
         }
     });
 }
@@ -33,8 +36,6 @@ watch(flash, triggerFlash);
 </script>
 
 <template>
-    <Toaster />
-
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
@@ -220,4 +221,6 @@ watch(flash, triggerFlash);
             </main>
         </div>
     </div>
+
+    <Toaster />
 </template>
