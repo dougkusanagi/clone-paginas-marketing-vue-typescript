@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/cloned-page', [ClonedPageController::class, 'store'])
     ->name('cloned-page.store');
 
+Route::post('/cloned-page/updateHtml', [ClonedPageController::class, 'updateHtml'])
+    ->name('cloned-page.updateHtml');
+
 Route::get('/cloned-page/{clonedPage}', [ClonedPageController::class, 'edit'])
     ->name('cloned-page.edit');
 

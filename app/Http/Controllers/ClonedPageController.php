@@ -41,4 +41,11 @@ class ClonedPageController extends Controller
             'clonedPage' => $clonedPage
         ]);
     }
+
+    public function updateHtml(Request $request)
+    {
+        // dd($request->all());
+
+        return response()->json($request->get('html'));
+    }
 }

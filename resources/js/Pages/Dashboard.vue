@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import FormClonePage from "@/Components/FormClonePage.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Button } from "@/components/ui/button";
 import { ref } from "vue";
+import { onMounted } from "vue";
+import axios from "axios";
+import { useToast } from "@/components/ui/toast";
+const { toast } = useToast();
 
 const props = defineProps({
     id: Number,
@@ -15,6 +19,26 @@ const link_url_editor = computed(() => {
     return page_id.value != null
         ? route("cloned-page.edit", page_id.value)
         : "";
+});
+
+async function updatePage(html: string) {
+    console.log(html);
+
+    const response = await axios.post(route("cloned-page.updateHtml"), {
+        _token: usePage().props.csrf,
+        html,
+    });
+
+    if (response.status === 200) {
+        toast({ title: "Página atualizada" });
+    }
+}
+
+onMounted(() => {
+    const bc = new BroadcastChannel("test_channel");
+    bc.onmessage = (event) => {
+        updatePage(event.data);
+    };
 });
 </script>
 
