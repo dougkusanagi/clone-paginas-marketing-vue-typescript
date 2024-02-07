@@ -3,8 +3,8 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
 import { useToast } from "@/components/ui/toast/use-toast";
+import axios from "axios";
 
 const { toast } = useToast();
 const form = useForm({ url: "https://my.copyblogger.com/" });

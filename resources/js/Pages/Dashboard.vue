@@ -8,6 +8,7 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import axios from "axios";
 import { useToast } from "@/components/ui/toast";
+
 const { toast } = useToast();
 
 const props = defineProps({
@@ -21,12 +22,10 @@ const link_url_editor = computed(() => {
         : "";
 });
 
-async function updatePage(html: string) {
-    console.log(html);
-
+async function updatePage(data: string) {
     const response = await axios.post(route("cloned-page.updateHtml"), {
         _token: usePage().props.csrf,
-        html,
+        data,
     });
 
     if (response.status === 200) {
@@ -37,7 +36,8 @@ async function updatePage(html: string) {
 onMounted(() => {
     const bc = new BroadcastChannel("test_channel");
     bc.onmessage = (event) => {
-        updatePage(event.data);
+        const data = JSON.stringify(event.data);
+        updatePage(data);
     };
 });
 </script>
@@ -52,15 +52,21 @@ onMounted(() => {
             </h2>
         </template>
 
+        <div class="mx-auto mt-6 max-w-7xl space-y-6 sm:px-6 lg:px-8">
+            <ul class="mx-4 list-disc">
+                <li>Force usePage() to update</li>
+            </ul>
+        </div>
+
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                 <div
                     class="overflow-hidden bg-white p-6 text-gray-900 shadow-sm dark:bg-gray-800 dark:text-gray-100 sm:rounded-lg"
                 >
                     <form-clone-page @cloned="(data) => (page_id = data.id)" />
                 </div>
 
-                <div class="mt-4" v-if="page_id">
+                <div v-if="page_id">
                     <div
                         class="overflow-hidden bg-white p-6 text-gray-900 shadow-sm dark:bg-gray-800 dark:text-gray-100 sm:rounded-lg"
                     >

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Factories\PageCrawlerServiceFactory;
 use App\Models\ClonedPage;
+use App\Services\DomCrawlerService;
 use Illuminate\Http\Request;
+use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Illuminate\Support\Facades\Session;
 
 class ClonedPageController extends Controller
@@ -35,8 +37,6 @@ class ClonedPageController extends Controller
 
     public function edit(ClonedPage $clonedPage)
     {
-        // dd($clonedPage);
-
         return view('cloned-page.edit', [
             'clonedPage' => $clonedPage
         ]);
@@ -44,8 +44,13 @@ class ClonedPageController extends Controller
 
     public function updateHtml(Request $request)
     {
-        // dd($request->all());
+        $data = json_decode($request->get('data'), true);
+        $dom_crawler = new DomCrawlerService(new DomCrawler($data['content']));
+        $cloned_page = ClonedPage::find($data['id']);
+        $page = $dom_crawler->newPage($cloned_page);
 
-        return response()->json($request->get('html'));
+        dd($data['id'], $data['content']);
+
+        return response()->json($html);
     }
 }

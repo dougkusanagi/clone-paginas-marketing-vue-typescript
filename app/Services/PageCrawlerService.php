@@ -17,27 +17,25 @@ class PageCrawlerService
 
     public function start(string $url): void
     {
-        $this->crawler
-            ->startCrawling($url);
+        $this->crawler->startCrawling($url);
     }
 
     public static function save(string $url, string $html)
     {
         $dom_crawler = new DomCrawlerService(new DomCrawler($html));
         $links = $dom_crawler->getLinks($html);
-
         $cloned_page = ClonedPage::create([
             'user_id' => auth()->user()->id,
             'url' => $url,
             'links' => json_encode($links),
         ]);
 
-        self::storagePage($html, $cloned_page->id);
+        self::storagePage($html, $cloned_page);
     }
 
-    public static function storagePage(string $html, int $cloned_page_id)
+    public static function storagePage(string $html, ClonedPage $cloned_page)
     {
         return Storage::disk('public')
-            ->put("pages/$cloned_page_id/index.html", $html, 'public');
+            ->put("pages/$cloned_page->id/index.html", $html, 'public');
     }
 }

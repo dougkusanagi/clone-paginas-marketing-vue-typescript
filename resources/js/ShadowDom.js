@@ -16,7 +16,10 @@ export default class ShadowDom {
         head = `<div id="shadow_root_head">${head.innerHTML}</div>`;
         let body = this.#parsedElement({ html, element: "body" });
         body = `<div id="shadow_root_body">${body.innerHTML}</div>`;
-        container.innerHTML = head + body;
+        let bodyClass = this.#getBodyClass({ html });
+        bodyClass = `<div id="shadow_root_bodyClass" style="display:none">${bodyClass}</div>`;
+        // console.log(bodyClass);
+        container.innerHTML = bodyClass + head + body;
         this.dom.appendChild(container);
     }
 
@@ -53,6 +56,11 @@ export default class ShadowDom {
     #parsedElement({ html, element }) {
         const dom = new DOMParser().parseFromString(html, "text/html");
         return dom[element];
+    }
+
+    #getBodyClass({ html }) {
+        const dom = new DOMParser().parseFromString(html, "text/html");
+        return dom.body.getAttribute("class");
     }
 
     #container() {
